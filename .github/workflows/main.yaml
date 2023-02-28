@@ -3,8 +3,8 @@ on:
     branches:
       - 'master'
     paths-ignore:
-      - '.github/**'
       - '.assets/**'
+      - .gitignore
 
 jobs:
   deploy_to_cluster:
@@ -15,9 +15,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Setup node
-      uses: actions/setup-node@v2.2.0
+      uses: actions/setup-node@v3.6.0
       with:
-        node-version: "14"
+        node-version: "18"
     - name: Install age
       run: |
         curl -Lo age.tar.gz https://github.com/FiloSottile/age/releases/download/v1.1.1/age-v1.1.1-linux-amd64.tar.gz

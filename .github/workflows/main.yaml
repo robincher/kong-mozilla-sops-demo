@@ -6,6 +6,9 @@ on:
       - '.assets/**'
       - .gitignore
 
+env:
+  SOPS_AGE_KEY_FILE: $(pwd)/secrets/age-key.txt
+
 jobs:
   deploy_to_cluster:
     runs-on: ubuntu-latest
@@ -39,8 +42,11 @@ jobs:
         cp kube/config .kube/config
     - name: decrypt values.
       run: |
-        echo ${{secrets.AGE_PRIVATE_KEY}} > .config/sops/age/keys.txt
+        pwd
+        ls
+        echo ${{secrets.AGE_PRIVATE_KEY}} > $SOPS_AGE_KEY_FILE
               #echo $SOPS_PRIVATE_KEY > .config/sops/age/keys.txt
+        ls .config/sops/age/keys.txt
         sops -d -i values.yaml 
     - name: deploy Kong Gateway using helm
       run: |

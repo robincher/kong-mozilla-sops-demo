@@ -31,4 +31,22 @@ jobs:
         sudo mv sops /usr/local/bin/sops
         sudo chmod +x /usr/local/bin/sops
         sops --version
-    
+    - name: Install kubectl, helm and setup config file
+      run: |
+        sudo snap install kubectl --classic
+        sudo snap install helm --classic
+        #mkdir -p .kube 
+        cp kube/config .kube/config
+    - name: decrypt values.
+      run: |
+        echo ${{secrets.AGE_PRIVATE_KEY}} > .config/sops/age/keys.txt
+              #echo $SOPS_PRIVATE_KEY > .config/sops/age/keys.txt
+        sops -d -i values.yaml 
+    - name: deploy Kong Gateway using helm
+      run: |
+        kubectl create namespace kong
+        helm repo add kong https://charts.konghq.com
+        helm repo update
+        helm install my-kong kong/kong -n kong --values ./values.yaml
+
+

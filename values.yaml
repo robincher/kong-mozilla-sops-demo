@@ -1,227 +1,114 @@
-# Kong for Kubernetes with Kong Enterprise with Enterprise features enabled and
-# exposed via TLS-enabled Ingresses. Before installing:
-# * Several settings (search for the string "CHANGEME") require user-provided
-#   Secrets. These Secrets must be created before installation.
-# * Ingresses reference example "<service>.kong.CHANGEME.example" hostnames. These must
-#   be changed to an actual hostname that resolve to your proxy.
-# * Ensure that your session configurations create cookies that are usable
-#   across your services. The admin session configuration must create cookies
-#   that are sent to both the admin API and Kong Manager, and any Dev Portal
-#   instances with authentication must create cookies that are sent to both
-#   the Portal and Portal API.
 image:
     repository: kong/kong-gateway
     tag: "3.1"
 env:
-    prefix: /kong_prefix/
-    log_level: debug
-    database: postgres
-    proxy_url: http://proxy.kic.aws.kongtest.net:8000
-    admin_gui_url: http://manager.kic.aws.kongtest.net:8002
-    admin_api_uri: http://admin.kic.aws.kongtest.net:8001
-    portal_gui_host: proxy.istio.aws.kongtest.net:8003
-    portal_api_url: http://proxy.istio.aws.kongtest.net:8004
-    portal_gui_protocol: http
-    session_conf_secret: kong-session-config
-    #portal_session_conf: '{"storage":"kong","cookie_name":"portal_session","secret":"kong456","cookie_secure":false}'
-    portal_session_conf:
-        valueFrom:
-            secretKeyRef:
-                name: kong-session-config
-                key: portal_session_conf
-    portal_auth: basic-auth
-    #password: KongRul3z!
-    password:
-        valueFrom:
-            secretKeyRef:
-                name: kong-enterprise-superuser-password
-                key: password
+    prefix: ENC[AES256_GCM,data:5sXjIzH9pkyPCD8odQ==,iv:knOzJe9O4I4JLZoNiW8BXfHyttMWMxgf+Xa1wc5aj1Q=,tag:rKStdRF9kpf+PyjTJ8E0cw==,type:str]
+    log_level: ENC[AES256_GCM,data:E8Il8hI=,iv:MgZxtmUOAGtT9LlmDnqGcVarrKWED6Qxyj0Mc5DxxhQ=,tag:KPahpmjs6kpxCg3wI3dlXQ==,type:str]
+    database: ENC[AES256_GCM,data:wf0KWzT9XmI=,iv:xA2cv4r8ZWdd0QyO/moCPqlFrfCP9USqFIlxEdoVF1Y=,tag:ROhli53oF5LxTTzo/7HIhg==,type:str]
+    proxy_url: ENC[AES256_GCM,data:PV3X+6ZFkd2y0DVmLtEUecffNBDcijgblDs=,iv:wwO+9cbhgb2eRuXGpqdJgNJ34EJWTTyAzsneVR03ago=,tag:G32bLe+J1h6YQQfDeLR9pA==,type:str]
+    admin_gui_url: ENC[AES256_GCM,data:ZG/NQw+keGIH9xZTAGe4ThKRTXUeBvOWbhg=,iv:kT8BSOMTtUC/MLwZIjIi8bwawosSzj6acqBe/19hLlg=,tag:B2+TB8tMzwIkVz7qQJVGKg==,type:str]
+    admin_api_uri: ENC[AES256_GCM,data:qPj2B3W5S4b0h3egX/9oyOF1FaA3jAl+J/s=,iv:Sq2GEsBtXXE6UZPhmFLlQKx9Fka4nox1npN3Gb+bNrI=,tag:HXMVdSpDWcFMiIKcHhYM4A==,type:str]
+    password: ENC[AES256_GCM,data:GLWkrA==,iv:spdbkK9BHBxbdPf2fFx5aNrrK0YBU8zzBKnxs0FIQxo=,tag:kIEUbJfmu29D43B8jQbWNA==,type:str]
 admin:
-    enabled: true
-    type: LoadBalancer
+    enabled: ENC[AES256_GCM,data:N+vUzA==,iv:hsxrRpAui8mazlztozQ4Yt8e6X9yFE81kJInmwd24bg=,tag:C2Z4O21EYHUjN6Vym5wHcg==,type:bool]
+    type: ENC[AES256_GCM,data:tXXn/T8avo4=,iv:X6WIj85zwzkW6qldXwB9cToPb41RJpciU0xv2hofSmA=,tag:nZhmUQXPjLVpJqnDO6bpzw==,type:str]
     annotations:
-        konghq.com/protocol: https
+        konghq.com/protocol: ENC[AES256_GCM,data:RYNd6Z4=,iv:EAGYNWHMPc+IrsFNkImgLb0nHHQwpscaYSP7Lk55iaE=,tag:UN8QKCiiMIYQCI7C/yyCpw==,type:str]
     http:
-        # Enable plaintext HTTP listen for the admin API
-        # Disabling this and using a TLS listen only is recommended for most configuration
-        enabled: true
-        servicePort: 8001
-        containerPort: 8001
-        # Set a nodePort which is available if service type is NodePort
-        nodePort: 31001
-        # Additional listen parameters, e.g. "reuseport", "backlog=16384"
+        #ENC[AES256_GCM,data:SyqC9D844kz0bw2+msGkiKdv6p4IbHHv4wXQLSm7Cfnl2QDDpSB891KH9ZkUm48=,iv:2MiYavOO/J4H8nGWWR0JDP6DzLMHWIcU9xnu/Zh7rMc=,tag:1iqexjD7Fhou9hMxudSEKA==,type:comment]
+        #ENC[AES256_GCM,data:bDbUiWp0trPl6hSgyoBkiaFdzDdSqYFmlu9YWpqMSqNH51HK7Y5B0loqQ8yTKsdpZ3FDSa0OSkwIjH/tt2xAp62RjtGqqaAdKL8ZTXwx2wnm,iv:Z8sGgb/OobmieP0t6Y7LbBN9oX//3GgnFzg3gYdnZBg=,tag:F+TblMcikjIxiYkEtcOC7Q==,type:comment]
+        enabled: ENC[AES256_GCM,data:xKE2GQ==,iv:rZz/eUK0e+b4dOi9/tgzW5CoPLc599BNWjEZWPhQnPY=,tag:509jBX8kpOV63AKW3IL2Iw==,type:bool]
+        servicePort: ENC[AES256_GCM,data:eCJJMA==,iv:b5b/GSB9lvlXqxgzTMnco5UbmQswT3tlhzpfFuxFABA=,tag:stik8R5eS59q8IHyTUXRDA==,type:int]
+        containerPort: ENC[AES256_GCM,data:4nL9dQ==,iv:WTeOrPt16kNjDSVYf07/1j8bEjbS/H3IPzeuk4Q3MYw=,tag:IfA0g4vyboCnHFbTGWPhgw==,type:int]
+        #ENC[AES256_GCM,data:pAJoEQ+i38IjdIGd17xoi6CWbxov/MWpOJMHa9FvpGPIuuT1cJ4aKaq8qNqttvXuZoCkr7QefjNAm1m+y1c=,iv:ifks4UNtwp8/ZP9KKjJpUIe/mWeSdSw3HsDy78+LEIQ=,tag:zXB38xU0nVpnwhnQ7FLpPQ==,type:comment]
+        nodePort: ENC[AES256_GCM,data:X6AstuU=,iv:okpdB9NvP8/IgOLoW5Sd52cMwqMSgor5gUr74kMJ7L4=,tag:8PH6qkQAa1bUNZ5Dvo+2UA==,type:int]
+        #ENC[AES256_GCM,data:jBu6aIeNKfiw7e2sfz49cO+U4uznwVrJiBkgla/V+vwe7szYTjjnK0467+Tlqp/YLuFjBs4K1tayeUd2bOPC9A==,iv:FYBCO8bCyQWAOO6Qa2Rwm22DxAaal30iIs2JQkGRjOk=,tag:V4haZdRwQ9OvzeQ1XHO6mg==,type:comment]
         parameters: []
     tls:
-        enabled: false
-        servicePort: 8444
-        containerPort: 8444
-        nodePort: 31444
-        parameters:
-            - http2
+        enabled: ENC[AES256_GCM,data:SCEO9F4=,iv:OxdiSg2H5sBECjePzueKFnc2ohAT02zCUOY0kGQ1z5I=,tag:iTvomFaev1trmP1Jn4EKrQ==,type:bool]
     ingress:
-        # changed
-        enabled: false
-        tls: CHANGEME-admin-tls-secret
-        hostname: admin.kong.CHANGEME.example
-        annotations:
-            kubernetes.io/ingress.class: kong
-        path: /
+        enabled: ENC[AES256_GCM,data:CDTpbsY=,iv:Y/aW5phqzlkrNnc5DAkH/jXkwxKAjZEgWxI6Xl02N2Y=,tag:9YPb2ZZXJjKYs/KrKXGRQQ==,type:bool]
 proxy:
-    enabled: true
-    type: LoadBalancer
+    enabled: ENC[AES256_GCM,data:Ut9BcQ==,iv:1UBE2PYY2qKz++P7+zgVYbap/PxUYRqZ4YYcV/PtTss=,tag:9mFfT40UnGR1hDubEdCXww==,type:bool]
+    type: ENC[AES256_GCM,data:mmfjjva0g8s=,iv:mieb4nWpG4OD3WN50pHwGC+XP+xK3tjMHt+i0VmtcWY=,tag:qAx4yuF+KV7wsLAE0tprmA==,type:str]
     annotations: {}
     http:
-        # Enable plaintext HTTP listen for the proxy
-        enabled: true
-        servicePort: 80
-        containerPort: 8000
-        # Set a nodePort which is available if service type is NodePort
-        #nodePort: 31000
-        # Additional listen parameters, e.g. "reuseport", "backlog=16384"
+        #ENC[AES256_GCM,data:2LBvdR8iFVpqvhN+JfEbqM+iKC8BO6ud3z6MaKtmyAsMJmlCR+ZSCLxNrg==,iv:4Z+D2DEH24cEbgehD9nK2bAQ8kMj0ZEp0sdfDLaCS38=,tag:bUamLx0pCz+9dfAMYwHxQg==,type:comment]
+        enabled: ENC[AES256_GCM,data:aNgIHA==,iv:Q/YrqiR5mE/73qSnQB8Dwkypat772XvcMCyqcL3TIp4=,tag:GqyCwLWCGyfWt16enMob0Q==,type:bool]
+        servicePort: ENC[AES256_GCM,data:x4Q=,iv:NXHh72drTgCDCKmeLucc6yLHZcizbN135U92nDJz1ao=,tag:60uqnEBJbnaevO4XsEtxtA==,type:int]
+        containerPort: ENC[AES256_GCM,data:QwUWWQ==,iv:XzApphacsu5U3Q7zDhsAtuobK3dcOs/27FcSZRvV/JU=,tag:7ZWk53i7YkV37R2vZXs8Pg==,type:int]
+        #ENC[AES256_GCM,data:YwQ8xzorFdp3nWks7rlCwkS/MjIi3vYH8jH/FRJoxxj7l2eEQIavw0OXtkQkNE1Zwy/nYaOWytft4IP7KZc=,iv:OUXo0+NHyY18bNsKolqkgpgBHPGXkdSldTzdKa22IU8=,tag:bAVWZlJsLwgqCYf0Vlp1ZA==,type:comment]
+        nodePort: ENC[AES256_GCM,data:8HsOvZI=,iv:6bjo35slOqWk50+lCE/vMfj2H5HaJDIV17IIGsb357s=,tag:dtaHvjhA3LjwVXiJNJDvoA==,type:int]
+        #ENC[AES256_GCM,data:9Vs90mKgCg4gIZYWVm6tbTWCjUKhqNh8hDpV56TFL9XQs9yiahPu2bGQ+phd6vtO693ObnqXrN9G1DOE7U7wUw==,iv:Ok6f42KWTu77I/HaHTwKTbxalsVwLKWRzrlzx+emTaE=,tag:tb9Ul48aRpRBSUuGbUDbTQ==,type:comment]
         parameters: []
-        #    - http2
     tls:
-        enabled: true
-        servicePort: 443
-        containerPort: 8443
-        nodePort: 31443
-        parameters:
-            - http2
+        enabled: ENC[AES256_GCM,data:6Bm+gis=,iv:oGYDzQozfazDmhY3RpT/QOKEJ/vPjoJfG2ZQWgTPG2I=,tag:mhAK88kYSfHZpEWn1euZEg==,type:bool]
     stream: {}
     ingress:
-        enabled: false
-        annotations: {}
-        path: /
+        enabled: ENC[AES256_GCM,data:IrEM6mw=,iv:opLpWlvfZNSVyC2tSclwcRqm2yynZwZRTkNTgesb/h0=,tag:ICmbt8Ej2jnyReFOypa3Bg==,type:bool]
     externalIPs: []
 enterprise:
-    enabled: true
-    # CHANGEME: https://github.com/Kong/charts/blob/main/charts/kong/README.md#kong-enterprise-license
-    license_secret: kong-enterprise-license
+    enabled: ENC[AES256_GCM,data:lN5uEE4=,iv:06k6nLX1SnFho91Gwq5HeOX4L297ZTufEYxdfPxMLvU=,tag:DlO82HClgikik//X7gt2Kw==,type:bool]
+    #ENC[AES256_GCM,data:vT+0Sy+6ANHkWv15xCYLDz7nWWIEF5D+GI1MX9PI4t6H9rbAX0Grp0zjUTgYBIPSAiu2wNZXGx9e2qU7/hWclcMLsfUSVZUhmzo9PeeGl4o6Fe/jyUbMRXDyRNU8jfKKlw==,iv:sWRgsG/oJiUH8Hmp3p/JWmhHHw4xBmq/ULzW5wXIJUg=,tag:HBkVRxw10jPhWZTQsgUuMw==,type:comment]
+    license_secret: ENC[AES256_GCM,data:4RSZ0PhNRsxr7zHzg5xbE7s/ON0Z1wg=,iv:oa+k52iBGRowtkjZTCyIzhIYaPBx1h5fqrAVuGFFjrU=,tag:wvbzUCl0iljSn0/IVckMuQ==,type:str]
     vitals:
-        enabled: true
+        enabled: ENC[AES256_GCM,data:Tpno8V8=,iv:cYX9VwXiqQ5EgAVpqgR+qGKg9lmNbM1NU0X+vpY1ZwU=,tag:QhSwaxmAH6LNhRaNIvdGJg==,type:bool]
     portal:
-        enabled: true
+        enabled: ENC[AES256_GCM,data:nmdtuTA=,iv:ZpLhc9udTYHQ0DQQUq+h7eu6rCb8IlhUYwxqP8myVoI=,tag:hEIHpt8EQcTxniyQmEs1vw==,type:bool]
     rbac:
-        enabled: true
-        admin_gui_auth: basic-auth
-        session_conf_secret: kong-session-config
-        admin_gui_auth_conf_secret: CHANGEME-admin-gui-auth-conf-secret
+        enabled: ENC[AES256_GCM,data:LtGfZ48=,iv:O0dLfu5It6F3VuQarb1yPTvimDn3z1a94bwaWXh614c=,tag:Oe278L0UOh8YpD0fCS1JjA==,type:bool]
     smtp:
-        enabled: false
-        portal_emails_from: none@example.com
-        portal_emails_reply_to: none@example.com
-        admin_emails_from: none@example.com
-        admin_emails_reply_to: none@example.com
-        smtp_admin_emails: none@example.com
-        smtp_host: smtp.example.com
-        smtp_port: 587
-        smtp_auth_type: ""
-        smtp_ssl: nil
-        smtp_starttls: true
-        auth:
-            # e.g. postmaster@example.com
-            smtp_username: ""
-            smtp_password_secret: CHANGEME-smtp-password
+        enabled: ENC[AES256_GCM,data:bHVMXsE=,iv:+enYu2DHdRPkK+61R0yiJwPdkDtzvq7FrlgLziYybn0=,tag:Tpwwg2VBwcFuXiMtPP/63A==,type:bool]
 manager:
-    enabled: true
-    type: LoadBalancer
+    enabled: ENC[AES256_GCM,data:hQgV0w==,iv:pKj5ZBDQgcvWTmBCbrQgwfXxTLYfFwKfv8EKmbUgX08=,tag:OYpTN1SAhYQTiH/vpTCgVg==,type:bool]
+    type: ENC[AES256_GCM,data:vmRPnibEd3U=,iv:o+CUE/f2jeduyy/rWfgrSKWIbhAAxVHD1zLHgBUAivs=,tag:STIcOGSULqMUVT8MVkTncQ==,type:str]
     annotations:
-        konghq.com/protocol: https
+        konghq.com/protocol: ENC[AES256_GCM,data:a5FDjr0=,iv:7w89epMVGd6KnUjl77gdKtHXUJR4Tx96oZmu/4yCuKs=,tag:nzXn2EcUosZ9nM2RJwG/QQ==,type:str]
     http:
-        # Enable plaintext HTTP listen for Kong Manager
-        enabled: true
-        servicePort: 8002
-        containerPort: 8002
-        # Set a nodePort which is available if service type is NodePort
-        #nodePort: 31002
-        # Additional listen parameters, e.g. "reuseport", "backlog=16384"
+        #ENC[AES256_GCM,data:2Ph7F/zA7oEB5RVnYEfeWcD2JOVuJfccqXYJzTKX9eLZ4XtUCEmsNbMdOoHaBw==,iv:Y20YvR1pgN1k/cQe22r58wKQKjWPmo8XS9YpVP5xiDk=,tag:sgZ2T47CE5RmCjc2jwIPdQ==,type:comment]
+        enabled: ENC[AES256_GCM,data:sLoq8A==,iv:d7amlOU6lkCHcaChXCMOLwzIH3+WETOlRr/ARvCezeU=,tag:S6MOBrslN8KEEcTrocHJLA==,type:bool]
+        servicePort: ENC[AES256_GCM,data:zb/pUg==,iv:oQHVdOMIKLi99IYWqWiryI62S6pBdk0WTwdrQAlhKKY=,tag:Li5tqWIxMdC0K4QtyLmdpw==,type:int]
+        containerPort: ENC[AES256_GCM,data:FqZy4w==,iv:vSB+yOY4tzQMdGBHQVCCDbLgiUOrvkHfhtJgITnyllY=,tag:bN1BRCCz9OR7PEoaHnxfXw==,type:int]
+        #ENC[AES256_GCM,data:+Vdq76bYHLP/gwqiZonI2bKaBz7VQaQcy8ZUuse14vujzj2V0LVm2tWnYCdeLyYoKnyaenop5WS3k8WUk6g=,iv:25UcyknSqgsavv45QYsXVNvgRcNlzA6pEALPb2U4KcQ=,tag:kJsU9R1X6M9Y7dyyEvLdBg==,type:comment]
+        nodePort: ENC[AES256_GCM,data:NhGS7Ko=,iv:UHUThaxQl6ywr6HLwzhnYugAuQwhGbITOvOikYfnIvc=,tag:O4gia5bydC3h/HPQ8gRtQw==,type:int]
+        #ENC[AES256_GCM,data:yrfUMmAg6ShmRrAI7Y4BngOUz+unL4Ez9N94mx0dDAiJsQQztIXseTtfPmLml9zwAJpyTyiamAaDJQUBVY1/OQ==,iv:LfLush2y1MBV3A9k6XC7H/2R//q8L02BgcYCiY1BELw=,tag:SNGvPlAy3HjpfYQhMH9I+w==,type:comment]
         parameters: []
     tls:
-        enabled: false
-        servicePort: 8445
-        containerPort: 8445
-        parameters:
-            - http2
+        enabled: ENC[AES256_GCM,data:3HvrvHA=,iv:ch3PA/2BwsNGoTO6JNsFoorUJmh0oPvUBxSYZ9/KMD0=,tag:HuIUQkKG1wHHFq28przO5w==,type:bool]
     ingress:
-        # changed
-        enabled: false
-        tls: CHANGEME-manager-tls-secret
-        hostname: manager.kong.CHANGEME.example
-        annotations: {}
-        path: /
+        enabled: ENC[AES256_GCM,data:TIf7rXg=,iv:Q80m4gqCY6Q7sUOrH1GsSxSAa6Jf7F0hBpx3o5XhucU=,tag:Ebq4Tugg/aWXoL7k6APjpw==,type:bool]
     externalIPs: []
 portal:
-    enabled: true
-    type: LoadBalancer
-    annotations:
-        konghq.com/protocol: https
-    http:
-        # Enable plaintext HTTP listen for the Developer Portal
-        enabled: true
-        servicePort: 8003
-        containerPort: 8003
-        # Set a nodePort which is available if service type is NodePort
-        #nodePort: 31003
-        # Additional listen parameters, e.g. "reuseport", "backlog=16384"
-        parameters: []
-    tls:
-        enabled: false
-        servicePort: 8446
-        containerPort: 8446
-        parameters:
-            - http2
-    ingress:
-        # changed
-        enabled: false
-        tls: CHANGEME-portal-tls-secret
-        hostname: portal.kong.CHANGEME.example
-        annotations:
-            kubernetes.io/ingress.class: kong
-        path: /
-    externalIPs: []
+    enabled: ENC[AES256_GCM,data:9m/Nibo=,iv:L+GH18kwcW4SC1HeSeqiNd1gNHVxqA0L63yyU/ZCco0=,tag:TPB3/eo4MwxvSO/8Por12A==,type:bool]
 portalapi:
-    enabled: enable
-    type: LoadBalancer
-    annotations:
-        konghq.com/protocol: https
-    http:
-        # Enable plaintext HTTP listen for the Developer Portal API
-        enabled: true
-        servicePort: 8004
-        containerPort: 8004
-        # Set a nodePort which is available if service type is NodePort
-        #nodePort: 31004
-        # Additional listen parameters, e.g. "reuseport", "backlog=16384"
-        parameters: []
-    tls:
-        enabled: false
-        servicePort: 8447
-        containerPort: 8447
-        parameters:
-            - http2
-    ingress:
-        enabled: false
-        tls: CHANGEME-portalapi-tls-secret
-        hostname: portalapi.kong.CHANGEME.example
-        annotations:
-            kubernetes.io/ingress.class: kong
-        path: /
-    externalIPs: []
+    enabled: ENC[AES256_GCM,data:z9LMaEQ=,iv:P7dhtPmcYdEG+EGBtnhpeg6ZKqcz8i2FcfFldIw8dGA=,tag:MMK4ivN4iDnnUnVcBWvDlQ==,type:bool]
 postgresql:
-    enabled: true
-    postgresqlUsername: kong
-    postgresqlDatabase: kong
-    postgresqlPassword: kong
+    enabled: ENC[AES256_GCM,data:JUABdg==,iv:H2VxWPPggnoOWDgRJx5MFCiH9ebmv2YBDoDeVCgXDW0=,tag:4yXXRbDBCCAZTO/cZ3V+JA==,type:bool]
+    postgresqlUsername: ENC[AES256_GCM,data:VK2n8A==,iv:gtkbQxKyz0GRdvBmjeoxTC/NDS3iqM0qEYRgClM+mwQ=,tag:H9XgYWqw00BTgQDrVh1E7A==,type:str]
+    postgresqlDatabase: ENC[AES256_GCM,data:QUrePg==,iv:3hhwlUUEhPNd++fJAJ7w6x+lD8MX6kW4rWK4twPiPTs=,tag:XBYiw33b4jss7xEdfiniKA==,type:str]
+    postgresqlPassword: ENC[AES256_GCM,data:l+uP8g==,iv:5joGoR0yMNwV8C6DFzET3dMXCr0PsLK/7cuRYfMp7Bw=,tag:buS5nzLKqWFMEH0GgtU8mg==,type:str]
     service:
-        port: 5432
+        port: ENC[AES256_GCM,data:rxd5sg==,iv:ALxpdtlTS0zAeqDOyQ3v9CuM/VW9lO9RkSpxRNZTblU=,tag:WL+1V8PIBNtUIRn4eulILQ==,type:int]
 ingressController:
     enabled: true
     installCRDs: false
-    env:
-        kong_admin_token:
-            valueFrom:
-                secretKeyRef:
-                    #CHANGEME
-                    name: kong-enterprise-superuser-password
-                    #CHANGEME
-                    key: password
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1h5ky9dsyre7r6xd2n35lw56wtp04plsj8fwemxfwf2j2gqf4aqlsf6xy6v
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBXYVFyNnh0NHBIOEVCV1NQ
+            TnFtTFBHNGxBc1cxT2FRV0dZZ28ralppam00CjVBMGNYdCtVODlOTkdXa2REUG9L
+            alMyWTk2ZGVzMWROZ3oranYvMktQNFEKLS0tIFpiL2dyd2NmbTBsOStiRWttc3ZG
+            cHVYanc0bm5MT2VNV3FpUHoxL2dXUncK012Ztf6gdQuYOyxlwVoUSYZUlcNu1FYd
+            frDoTIZS0xOo5nubDa8Sr5/r7Ut5dWIH0lJ7qF1GU2sRS7UwV0/yRQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-03-01T07:09:35Z"
+    mac: ENC[AES256_GCM,data:0V5wWWw6w8n9oyXSuqCrAXeutJMzwFH6eL/bsGBPVWby5TQSDV6JdAtOuaJfYvZENJiMFgbLyW8LPkVivx+LXzIYpU0KCbB+R6ITmibARwQ4LPKPnn+qE6zypj1KMnXrWEWRxeGJ2wnfqnPSinFhE5+7Cfe9AFSvTUKpRGh8iqY=,iv:5hdRCpTkqrfN5ayABhWnIJxlbyVxStB3aHXmhPgn2zA=,tag:kUB2fTRrmWO150yaNykLLg==,type:str]
+    pgp: []
+    encrypted_regex: ^(env|admin|proxy|enterprise|manager|portal|portalapi|postgresql)$
+    version: 3.7.3

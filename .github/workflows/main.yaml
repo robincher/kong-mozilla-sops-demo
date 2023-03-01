@@ -35,7 +35,7 @@ jobs:
       run: |
         sudo snap install kubectl --classic
         sudo snap install helm --classic
-        #mkdir -p .kube 
+        mkdir -p .kube 
         cp kube/config .kube/config
     - name: decrypt values.
       run: |

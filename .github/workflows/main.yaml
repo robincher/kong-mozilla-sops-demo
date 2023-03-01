@@ -7,8 +7,8 @@ on:
       - .gitignore
 
 env:
-  SOPS_AGE_KEY_PATH: $(pwd)/secrets/
-  SOPS_AGE_KEY_FILE: $(SOPS_AGE_KEY_FILE)/age-key.txt
+  SOPS_AGE_KEY_PATH: $PWD
+  SOPS_AGE_KEY_FILE: $PWD/age-key.txt
 
 jobs:
   deploy_to_cluster:
@@ -43,11 +43,10 @@ jobs:
         cp kube/config .kube/config
     - name: setup private age key.
       run: |
-        mkdir -p $SOPS_AGE_KEY_PATH
         echo ${{secrets.AGE_PRIVATE_KEY}} > $SOPS_AGE_KEY_FILE
     - name: decrypt values.
       run: |
-        sops -d -i values.yaml 
+        sops -d -i ./values.yaml
     - name: deploy Kong Gateway using helm
       run: |
         kubectl create namespace kong

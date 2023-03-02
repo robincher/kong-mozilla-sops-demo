@@ -10,7 +10,7 @@ env:
   #SOPS_AGE_KEY_PATH: $PWD
   SOPS_AGE_KEY_FILE: /tmp/age-key.txt
   PRIVATE_KEY: ${{ secrets.AGE_PRIVATE_KEY }}
-  KUBECONFIG: /tmp/kube/config
+  KUBECONFIG: /tmp/config
 
 jobs:
   deploy_to_cluster:

@@ -10,6 +10,7 @@ env:
   #SOPS_AGE_KEY_PATH: $PWD
   SOPS_AGE_KEY_FILE: /tmp/age-key.txt
   PRIVATE_KEY: ${{ secrets.AGE_PRIVATE_KEY }}
+  KUBECONFIG: /tmp/kube/config
 
 jobs:
   deploy_to_cluster:
@@ -40,9 +41,9 @@ jobs:
       run: |
         sudo snap install kubectl --classic
         sudo snap install helm --classic
-        mkdir -p .kube 
-        cp kube/config .kube/config
-        echo $PRIVATE_KEY
+        #mkdir -p .kube 
+        cp kube/config $KUBECONFIG
+        #echo $PRIVATE_KEY
     - name: setup private age key.
       run: |
         echo $PRIVATE_KEY > /tmp/age-key.txt

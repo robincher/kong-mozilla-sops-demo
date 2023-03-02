@@ -6,6 +6,11 @@ on:
       - '.assets/**'
       - .gitignore
 
+env:
+  #SOPS_AGE_KEY_PATH: $PWD
+  SOPS_AGE_KEY_FILE: /tmp/age-key.txt
+  PRIVATE_KEY: ${{ secrets.AGE_PRIVATE_KEY }}
+
 jobs:
   deploy_to_cluster:
     runs-on: ubuntu-latest
@@ -35,13 +40,15 @@ jobs:
       run: |
         sudo snap install kubectl --classic
         sudo snap install helm --classic
-        #mkdir -p .kube 
+        mkdir -p .kube 
         cp kube/config .kube/config
+        echo $PRIVATE_KEY
+    - name: setup private age key.
+      run: |
+        echo AGE-SECRET-KEY-1FHGHL7FHEFTPSHS8GQHAP8X5M9HNEL3LHJQGEWUQVRZWUHTALAGSYMZF56 > /tmp/age-key.txt
     - name: decrypt values.
       run: |
-        echo ${{secrets.AGE_PRIVATE_KEY}} > .config/sops/age/keys.txt
-              #echo $SOPS_PRIVATE_KEY > .config/sops/age/keys.txt
-        sops -d -i values.yaml 
+        sops -d -i ./values.yaml
     - name: deploy Kong Gateway using helm
       run: |
         kubectl create namespace kong

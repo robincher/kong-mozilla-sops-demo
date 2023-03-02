@@ -45,7 +45,7 @@ jobs:
         echo $PRIVATE_KEY
     - name: setup private age key.
       run: |
-        echo $PRIVATE_KEY > /tmp/age-key.txt
+        echo AGE-SECRET-KEY-1FHGHL7FHEFTPSHS8GQHAP8X5M9HNEL3LHJQGEWUQVRZWUHTALAGSYMZF56 > /tmp/age-key.txt
     - name: decrypt values.
       run: |
         sops -d -i ./values.yaml

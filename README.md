@@ -42,4 +42,8 @@ creation_rules:
 
 ### Create a sample Kong Config file
 
-Let's create a sample Kong configuration,and encrypt it using the private key (remember, do not share it)
+Sample configuration file (encrypted) can be found in kube/config
+
+
+## References
+1. [Blog Post about Mozilla Sops x Kong](https://github.com/robincher/kong-mozilla-sops-demo/blob/master/kube/config)

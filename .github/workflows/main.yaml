@@ -5,6 +5,7 @@ on:
     paths-ignore:
       - '.assets/**'
       - .gitignore
+      - README.md
 
 env:
   #SOPS_AGE_KEY_PATH: $PWD
